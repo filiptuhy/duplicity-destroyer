@@ -87,4 +87,8 @@ public class Files {
             duplicatezzList = getDuplicates();
         }
     }
+
+    public void deleteAll() {
+        filezzHashMap.clear();
+    }
 }

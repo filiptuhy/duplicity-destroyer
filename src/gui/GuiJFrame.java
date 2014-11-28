@@ -150,6 +150,7 @@ int mp3Number = 1;
 public void showDuplicatesInTable()
 { 
     DefaultTableModel  myModel = (DefaultTableModel ) jTable1.getModel();
+    
     int i = myModel.getRowCount()-1;
     while (myModel.getRowCount() > 0) 
     {        
@@ -178,7 +179,7 @@ public void showDuplicatesInTable()
     }//GEN-LAST:event_OpenFolderButtonActionPerformed
 
     private void DeleteSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteSelectedButtonActionPerformed
-        final TableModel model = jTable1.getModel();
+         TableModel model = jTable1.getModel();
         int numberOfDeletedFilez = 0;
         int reply = JOptionPane.showConfirmDialog(null, "Are you sure that you want to delete all ?", "Delete duplicates: " , JOptionPane.INFORMATION_MESSAGE);
         if (reply == JOptionPane.YES_OPTION) 
@@ -194,7 +195,8 @@ public void showDuplicatesInTable()
                     }
                 }
             } 
-         JOptionPane.showMessageDialog(null, numberOfDeletedFilez+" files were succesfully deleted.", "Deleted " , JOptionPane.INFORMATION_MESSAGE);        
+         JOptionPane.showMessageDialog(null, numberOfDeletedFilez+" files were succesfully deleted.", "Deleted " , JOptionPane.INFORMATION_MESSAGE);  
+         files.deleteAll();
          mp3Number = files.addAllFromFolder(new File(selectedFile.getAbsolutePath()));
          showDuplicatesInTable();
         }
@@ -211,7 +213,7 @@ public void showDuplicatesInTable()
         logger.log(Level.INFO, "File deleted: {0}", fileToBeDeleted);
     }
 
-    private static boolean valueHereWasChecked(final TableModel model, int i, int j) {
+    private static boolean valueHereWasChecked( TableModel model, int i, int j) {
         return model.getValueAt(i, j).equals(true);
     }
     

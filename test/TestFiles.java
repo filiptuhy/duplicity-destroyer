@@ -107,7 +107,6 @@ public class TestFiles {
      @Test
      public void TestDeleWontDeleteIfNoDuplicates() 
      {
-        List<String> duplicatezzList = new ArrayList<>();
         Files files = new Files();
          
         files.add("path01","fileName01");
@@ -118,5 +117,16 @@ public class TestFiles {
         
         files.deleteByPath(fileToBeDeleted);
         assertEquals(2, files.getNumberOfFiles());        
+     }
+     
+      @Test
+     public void TestDeleAll() 
+     {
+        Files files = new Files();
+        files.add("path","fileName");
+        files.add("path01","fileName01");
+        assertEquals(2, files.getNumberOfFiles());  
+        files.deleteAll();
+        assertEquals(0, files.getNumberOfFiles());  
      }
 }
