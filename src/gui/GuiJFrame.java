@@ -41,7 +41,6 @@ int mp3Number = 1;
         try {
             fileHandler=new FileHandler("loggerExample.log", false);
             } catch (SecurityException | IOException e) {
-                e.printStackTrace();
             }
             Logger logger1 = Logger.getLogger("");
             fileHandler.setFormatter(new SimpleFormatter());
@@ -171,11 +170,9 @@ public void showDuplicatesInTable()
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) 
         {
-           selectedFile = fileChooser.getSelectedFile();
-          System.out.println(selectedFile.getName());         
-          
-          mp3Number = files.addAllFromFolder(new File(selectedFile.getAbsolutePath()));
-          showDuplicatesInTable();
+            selectedFile = fileChooser.getSelectedFile();
+            mp3Number = files.addAllFromFolder(new File(selectedFile.getAbsolutePath()));
+            showDuplicatesInTable();
         }
     }//GEN-LAST:event_OpenFolderButtonActionPerformed
 
@@ -189,14 +186,10 @@ public void showDuplicatesInTable()
             {
                 for (int j = 1; j <model.getColumnCount(); j++) 
                 {
-                    if (model.getValueAt(i, j).equals(true)) 
+                    if (valueHereWasChecked(model, i, j)) 
                     {
-                        String fileToBeDeleted = (String) model.getValueAt(i, 0);
-                        jTextArea1.append("Deleted "+fileToBeDeleted+"\n");
-                        File file = new File((String) model.getValueAt(i, 1));
-                        file.delete();
+                        deleteFile(model, i);
                         numberOfDeletedFilez++;
-                        logger.log(Level.INFO, "File deleted: {0}", fileToBeDeleted);
                     }
                 }
             } 
@@ -205,6 +198,19 @@ public void showDuplicatesInTable()
          showDuplicatesInTable();
         }
     }//GEN-LAST:event_DeleteSelectedButtonActionPerformed
+
+    private void deleteFile(final TableModel model, int i) 
+    {
+        String fileToBeDeleted = (String) model.getValueAt(i, 0);
+        jTextArea1.append("Deleted "+fileToBeDeleted+"\n");
+        File file = new File((String) model.getValueAt(i, 1));
+        file.delete();        
+        logger.log(Level.INFO, "File deleted: {0}", fileToBeDeleted);
+    }
+
+    private static boolean valueHereWasChecked(final TableModel model, int i, int j) {
+        return model.getValueAt(i, j).equals(true);
+    }
     
     /**
      * @param args the command line arguments

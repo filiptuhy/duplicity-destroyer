@@ -16,7 +16,7 @@ import java.util.Set;
 public class Files {
     private HashMap<String, String> filezzHashMap = new HashMap<String, String>();
     List<String> duplicatezzList = new ArrayList<>();
-    private int mp3Number = 1;
+    private int mp3Count = 1;
 
     public void add(String path, String fileName) {
         filezzHashMap.put(path,fileName);
@@ -34,11 +34,11 @@ public class Files {
                 else if(oneFile.getName().endsWith(".mp3"))
                      {
                         filezzHashMap.put(oneFile.getAbsolutePath(),oneFile.getName());
-                        mp3Number++;
+                        mp3Count++;
                      }
             }
         }
-        return mp3Number;
+        return mp3Count;
     }
 
     public Object getNumberOfFiles() {
