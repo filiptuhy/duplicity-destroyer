@@ -146,6 +146,7 @@ int mp3Number = 1;
 
   
 // TODO not refreshing but adding to the end of the table
+// TODO DO NOT add data to the file list, refresh file list
 public void showDuplicatesInTable()
 { 
     DefaultTableModel  myModel = (DefaultTableModel ) jTable1.getModel();
@@ -203,8 +204,10 @@ public void showDuplicatesInTable()
     {
         String fileToBeDeleted = (String) model.getValueAt(i, 0);
         jTextArea1.append("Deleted "+fileToBeDeleted+"\n");
-        File file = new File((String) model.getValueAt(i, 1));
-        file.delete();        
+        String pathOfTheFileToBeDeleted = (String) model.getValueAt(i, 1);
+        File file = new File(pathOfTheFileToBeDeleted);
+        file.delete();
+        files.deleteByPath(pathOfTheFileToBeDeleted);
         logger.log(Level.INFO, "File deleted: {0}", fileToBeDeleted);
     }
 

@@ -78,4 +78,13 @@ public class Files {
         }
 	return setToReturn;
     }    
+
+    public void deleteByPath(String fileToBeDeleted) 
+    {
+        if(duplicatezzList.size() > 0)
+        {
+            filezzHashMap.remove(fileToBeDeleted);
+            duplicatezzList = getDuplicates();
+        }
+    }
 }

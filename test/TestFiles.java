@@ -64,22 +64,59 @@ public class TestFiles {
         assertEquals(4, files.getNumberOfFiles());
      }
      
+     @Test
      public void TestFindDuplicatesReturnCorrectDuplicates() 
+     {
+        List<String> duplicatezzList = new ArrayList<>();
+        Files files = new Files();
+        String dupliciteFilename = "dupliciteFilename";
+
+         
+        files.add("path01","fileName01");
+        files.add("path02","fileName02");       
+        files.add("path03"+dupliciteFilename, dupliciteFilename);
+        files.add("path04"+dupliciteFilename, dupliciteFilename);
+        
+        duplicatezzList = files.getDuplicates();
+    //TODO FIX THIS TESTS
+        assertEquals(2, duplicatezzList.size());
+        assertEquals("path03"+dupliciteFilename,duplicatezzList.get(0));
+        assertEquals("path04"+dupliciteFilename,duplicatezzList.get(1));
+        assertEquals(4, files.getNumberOfFiles());
+     }
+     
+     @Test
+     public void TestDeleFile() 
      {
         List<String> duplicatezzList = new ArrayList<>();
         Files files = new Files();
         String dupliciteFilename = "dupliciteFilename";
         
         files.add("path01","fileName01");
-        files.add("path02","fileName02");
+        String fileToBeDeleted = "path02";
+        files.add(fileToBeDeleted,"fileName02");
         files.add("path03", dupliciteFilename);
         files.add("path04", dupliciteFilename);
         duplicatezzList = files.getDuplicates();
         
-        assertEquals(2, duplicatezzList.size());
-        assertEquals(duplicatezzList.get(1),duplicatezzList.get(0));
-        assertEquals(dupliciteFilename,duplicatezzList.get(0));
-        assertEquals(dupliciteFilename,duplicatezzList.get(1));
         assertEquals(4, files.getNumberOfFiles());
+        files.deleteByPath(fileToBeDeleted);
+        assertEquals(3, files.getNumberOfFiles());        
+     }
+     
+     @Test
+     public void TestDeleWontDeleteIfNoDuplicates() 
+     {
+        List<String> duplicatezzList = new ArrayList<>();
+        Files files = new Files();
+         
+        files.add("path01","fileName01");
+        String fileToBeDeleted = "path02";
+        files.add(fileToBeDeleted,"fileName02");
+        
+        assertEquals(2, files.getNumberOfFiles()); 
+        
+        files.deleteByPath(fileToBeDeleted);
+        assertEquals(2, files.getNumberOfFiles());        
      }
 }
