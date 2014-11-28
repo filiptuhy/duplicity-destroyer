@@ -31,10 +31,10 @@ public class GuiJFrame extends javax.swing.JFrame {
 
 
 Files files;
-List<String> duplicatezzList = new ArrayList<>();
 int mp3Number = 1;
 
-    public GuiJFrame() {
+    public GuiJFrame() 
+    {
         files = new Files();
         initComponents();
         
@@ -47,7 +47,6 @@ int mp3Number = 1;
             fileHandler.setFormatter(new SimpleFormatter());
             logger1.addHandler(fileHandler);
             logger1.setLevel(Level.CONFIG);
-
     }
 
     /**
@@ -147,7 +146,7 @@ int mp3Number = 1;
     }// </editor-fold>//GEN-END:initComponents
 
   
-       
+// TODO not refreshing but adding to the end of the table
 public void showDuplicatesInTable()
 { 
     DefaultTableModel  myModel = (DefaultTableModel ) jTable1.getModel();
@@ -156,18 +155,14 @@ public void showDuplicatesInTable()
     {        
              myModel.removeRow(i);
              i--;
-
     }
-         
-     //myModel.fireTableDataChanged();
-    
+           
     for(String dupo : files.getDuplicates())
     {
         String[] name = dupo.split("\\\\");        
         myModel.addRow(new Object[]{name[name.length-1],dupo, false});   
     }
-    //myModel.fireTableDataChanged();
-}
+ }
 
     File selectedFile;
     private void OpenFolderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFolderButtonActionPerformed
