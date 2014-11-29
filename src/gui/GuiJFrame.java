@@ -25,27 +25,25 @@ import src.Files;
  * @author filipovsluha
  */
 public class GuiJFrame extends javax.swing.JFrame {
-    
- private final static Logger logger = Logger.getLogger(GuiJFrame.class.getName());
- private static FileHandler fileHandler = null;
 
+    private final static Logger logger = Logger.getLogger(GuiJFrame.class.getName());
+    private static FileHandler fileHandler = null;
 
-Files files;
-int mp3Number = 1;
+    Files files;
+    int mp3Number = 1;
 
-    public GuiJFrame() 
-    {
+    public GuiJFrame() {
         files = new Files();
         initComponents();
-        
+
         try {
-            fileHandler=new FileHandler("loggerExample.log", false);
-            } catch (SecurityException | IOException e) {
-            }
-            Logger logger1 = Logger.getLogger("");
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger1.addHandler(fileHandler);
-            logger1.setLevel(Level.CONFIG);
+            fileHandler = new FileHandler("loggerExample.log", false);
+        } catch (SecurityException | IOException e) {
+        }
+        Logger logger1 = Logger.getLogger("");
+        fileHandler.setFormatter(new SimpleFormatter());
+        logger1.addHandler(fileHandler);
+        logger1.setLevel(Level.CONFIG);
     }
 
     /**
@@ -144,34 +142,32 @@ int mp3Number = 1;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  
 // TODO not refreshing but adding to the end of the table
 // TODO DO NOT add data to the file list, refresh file list
-public void showDuplicatesInTable()
-{ 
-    DefaultTableModel  myModel = (DefaultTableModel ) jTable1.getModel();
-    
-    int i = myModel.getRowCount()-1;
-    while (myModel.getRowCount() > 0) 
-    {        
-             myModel.removeRow(i);
-             i--;
+    public void showDuplicatesInTable() {
+        DefaultTableModel myModel = (DefaultTableModel) jTable1.getModel();
+
+        int i = myModel.getRowCount() - 1;
+        
+        for (int j = 0; j < myModel.getRowCount(); j++) {
+            System.out.println("File  "+j);
+            myModel.removeRow(j);
+            j--;
+        }
+
+
+        for (String dupo : files.getDuplicates()) {
+            String[] name = dupo.split("\\\\");
+            myModel.addRow(new Object[]{name[name.length - 1], dupo, false});
+        }
     }
-           
-    for(String dupo : files.getDuplicates())
-    {
-        String[] name = dupo.split("\\\\");        
-        myModel.addRow(new Object[]{name[name.length-1],dupo, false});   
-    }
- }
 
     File selectedFile;
     private void OpenFolderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFolderButtonActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnValue = fileChooser.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) 
-        {
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
             mp3Number = files.addAllFromFolder(new File(selectedFile.getAbsolutePath()));
             showDuplicatesInTable();
@@ -179,33 +175,29 @@ public void showDuplicatesInTable()
     }//GEN-LAST:event_OpenFolderButtonActionPerformed
 
     private void DeleteSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteSelectedButtonActionPerformed
-         TableModel model = jTable1.getModel();
+        TableModel model = jTable1.getModel();
         int numberOfDeletedFilez = 0;
-        int reply = JOptionPane.showConfirmDialog(null, "Are you sure that you want to delete all ?", "Delete duplicates: " , JOptionPane.INFORMATION_MESSAGE);
-        if (reply == JOptionPane.YES_OPTION) 
-        {
-            for (int i =1; i < model.getRowCount(); i++) 
-            {
-                for (int j = 1; j <model.getColumnCount(); j++) 
-                {
-                    if (valueHereWasChecked(model, i, j)) 
-                    {
+        int reply = JOptionPane.showConfirmDialog(null, "Are you sure that you want to delete all ?", "Delete duplicates: ", JOptionPane.INFORMATION_MESSAGE);
+        if (reply == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    if (valueHereWasChecked(model, i, j)) {
                         deleteFile(model, i);
                         numberOfDeletedFilez++;
                     }
                 }
-            } 
-         JOptionPane.showMessageDialog(null, numberOfDeletedFilez+" files were succesfully deleted.", "Deleted " , JOptionPane.INFORMATION_MESSAGE);  
-         files.deleteAll();
-         mp3Number = files.addAllFromFolder(new File(selectedFile.getAbsolutePath()));
-         showDuplicatesInTable();
+            }
+            JOptionPane.showMessageDialog(null, numberOfDeletedFilez + " files were succesfully deleted.", "Deleted ", JOptionPane.INFORMATION_MESSAGE);
+            files.deleteAll();
+            System.out.println("DeleteSelectedButtonActionPerformed path :" + selectedFile.getAbsolutePath());
+            mp3Number = files.addAllFromFolder(new File(selectedFile.getAbsolutePath()));
+            showDuplicatesInTable();
         }
     }//GEN-LAST:event_DeleteSelectedButtonActionPerformed
 
-    private void deleteFile(final TableModel model, int i) 
-    {
+    private void deleteFile(final TableModel model, int i) {
         String fileToBeDeleted = (String) model.getValueAt(i, 0);
-        jTextArea1.append("Deleted "+fileToBeDeleted+"\n");
+        jTextArea1.append("Deleted " + fileToBeDeleted + "\n");
         String pathOfTheFileToBeDeleted = (String) model.getValueAt(i, 1);
         File file = new File(pathOfTheFileToBeDeleted);
         file.delete();
@@ -213,10 +205,10 @@ public void showDuplicatesInTable()
         logger.log(Level.INFO, "File deleted: {0}", fileToBeDeleted);
     }
 
-    private static boolean valueHereWasChecked( TableModel model, int i, int j) {
+    private static boolean valueHereWasChecked(TableModel model, int i, int j) {
         return model.getValueAt(i, j).equals(true);
     }
-    
+
     /**
      * @param args the command line arguments
      */
